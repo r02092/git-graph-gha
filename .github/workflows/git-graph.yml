@@ -1,0 +1,49 @@
+name: Gitのグラフの更新
+
+on:
+  push:
+  workflow_call:
+
+permissions:
+  contents: write
+
+jobs:
+  git-graph:
+    name: Gitのグラフの更新
+    runs-on: ubuntu-latest
+    steps:
+      - id: cache
+        uses: actions/cache/restore@v5
+        with:
+          path: git-graph/target/release
+          key: 0
+      - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        uses: actions/checkout@v7
+        with:
+          repository: git-bahn/git-graph
+          ref: 5ae210fa9f2cc59e4f51c9b40a98ea0fce5fa040
+          path: git-graph
+      - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: cargo build --manifest-path git-graph/Cargo.toml --release
+      - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v5
+        with:
+          path: git-graph/target/release
+          key: 0
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          path: data
+      - run: |
+          ../git-graph/target/release/git-graph --svg -n 20 > git-graph.svg
+          git checkout --orphan git-graph
+          git rm -rf .
+          sed -i '1a<style>path[fill="#00000030"]{fill:#ffffff30}svg{background:#0d1117}text{fill:#fff}</style>' git-graph.svg
+          git add .
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --date="$GIT_COMMITTER_DATE" -m Gitのグラフを更新
+          git push -f origin git-graph
+        working-directory: data
+        env:
+          GIT_COMMITTER_DATE: Thu Jan 1 00:00:00 1970 +0000
