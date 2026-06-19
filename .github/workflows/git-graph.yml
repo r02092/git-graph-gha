@@ -4,27 +4,35 @@ on:
   workflow_call:
     inputs:
       cache-key:
+        description: キャッシュのキー
         default: "0"
         type: string
       git-graph-ref:
+        description: 使用するgit-bahn/git-graphのref
         default: 5ae210fa9f2cc59e4f51c9b40a98ea0fce5fa040
         type: string
       max-count:
+        description: グラフに表示するコミットの数
         default: 20
         type: number
       branch-name:
+        description: グラフの画像を置くブランチ
         default: git-graph
         type: string
       commit-msg:
+        description: コミットメッセージ
         default: Gitのグラフを更新
         type: string
       commit-name:
+        description: コミットの作成者のユーザー名
         default: github-actions[bot]
         type: string
       commit-email:
+        description: コミットの作成者のメールアドレス
         default: 41898282+github-actions[bot]@users.noreply.github.com
         type: string
       commit-date:
+        description: コミットの日付
         default: Thu Jan 1 00:00:00 1970 +0000
         type: string
 
