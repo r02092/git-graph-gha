@@ -1,0 +1,11 @@
+name: 「Gitのグラフの更新」ワークフローをテスト
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    uses: ./.github/workflows/git-graph.yml
