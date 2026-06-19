@@ -19,7 +19,7 @@
    または、以下のように再利用可能なワークフローとして呼び出す
 
    ```yml
-   uses: r02092/git-graph-gha/.github/workflows/git-graph.yml
+   uses: r02092/git-graph-gha/.github/workflows/git-graph.yml@main
    ```
 
 2. Markdownに以下の形式のURLでグラフの画像を貼る
